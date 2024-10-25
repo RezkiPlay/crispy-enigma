@@ -1,0 +1,34 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int pilihan, jumlahPesanan;
+    int harga[] = {12000, 15000, 14000};
+    string nama[] = {"sate", "gado-gado", "nasi-goreng"};
+    
+    cout << "Selamat datang di restoran kari. Silakan pilih makanan yang ingin dipesan:\n";
+    cout << "1. Sate - Rp 12.000\n2. Gado-gado - Rp 15.000\n3. Nasi Goreng - Rp 14.000\n";
+    cout << "Masukkan pilihan Anda (1-3): ";
+    cin >> pilihan;
+
+ if (pilihan < 1 || pilihan > 3) {
+        cout << "Pilihan tidak valid!\n";
+        return 0;
+    }
+   cout << "Masukkan jumlah pesanan: ";
+    cin >> jumlahPesanan;
+    int totalBiaya = harga[pilihan - 1] * jumlahPesanan;
+    cout << "Anda memesan " << nama[pilihan - 1] << " sebanyak " << jumlahPesanan << " porsi, total biaya Rp " << totalBiaya << endl;
+
+    int jumlahBayar;
+    cout << "Masukkan jumlah uang yang dibayar Rp ";
+    cin >> jumlahBayar;
+
+    if (jumlahBayar < totalBiaya) {
+        cout << "Uang tidak cukup! Pembayaran dibatalkan.\n";
+    } else {
+        cout << "Sisa uang Anda: Rp " << jumlahBayar - totalBiaya << "\nTerima kasih telah berbelanja!\n";
+    }
+
+    return 0;
+}
