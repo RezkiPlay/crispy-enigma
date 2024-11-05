@@ -83,3 +83,197 @@ void cetakStruk(const vector<KeranjangItem>& keranjang, double totalHarga, doubl
 int main() {
     // Fungsi utama tetap sama seperti sebelumnya
 }
+
+
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include <vector>
+#include <ctime>
+
+using namespace std;
+
+struct Barang {
+    int id;
+    string nama;
+    double harga;
+    int stok;
+};
+
+struct KeranjangItem {
+    Barang barang;
+    int jumlah;
+};
+
+// Fungsi untuk inisialisasi barang-barang terkait komputer
+vector<Barang> inisialisasiBarang() {
+    vector<Barang> barangList = {
+        {1, "Laptop", 7000000, 10}, {2, "Mouse", 50000, 50}, {3, "Keyboard", 150000, 30},
+        {4, "Monitor", 2000000, 20}, {5, "Printer", 1200000, 15}, {6, "Scanner", 900000, 10},
+        {7, "Flashdisk 32GB", 80000, 100}, {8, "Harddisk Eksternal", 500000, 20}, {9, "RAM 8GB", 450000, 25},
+        {10, "SSD 512GB", 950000, 15}, {11, "Processor Intel i5", 2200000, 10}, {12, "Motherboard", 1500000, 8},
+        {13, "VGA Card", 3000000, 5}, {14, "Headset", 250000, 20}, {15, "Webcam", 180000, 25},
+        {16, "UPS", 1000000, 12}, {17, "Cable HDMI", 50000, 50}, {18, "Cooling Fan", 120000, 40},
+        {19, "Power Supply", 750000, 10}, {20, "Speaker", 300000, 20}, {21, "Flashdisk 64GB", 120000, 70},
+        {22, "SSD 1TB", 1700000, 10}, {23, "Mousepad", 20000, 100}, {24, "Laptop Cooling Pad", 150000, 20},
+        {25, "USB Hub", 60000, 40}, {26, "Projector", 3500000, 5}, {27, "WiFi Router", 600000, 10},
+        {28, "External DVD Writer", 500000, 8}, {29, "Gaming Keyboard", 850000, 12}, {30, "Gaming Mouse", 600000, 15},
+        {31, "Bluetooth Adapter", 50000, 30}, {32, "Wireless Mouse", 70000, 50}, {33, "Mechanical Keyboard", 1200000, 10},
+        {34, "Monitor Arm", 300000, 20}, {35, "Printer Ink", 120000, 50}, {36, "LAN Cable", 30000, 80},
+        {37, "Portable SSD 256GB", 700000, 15}, {38, "RAM 16GB", 850000, 10}, {39, "UPS Battery", 450000, 8},
+        {40, "VGA HDMI Adapter", 25000, 60}, {41, "PC Case", 600000, 10}, {42, "Gamepad", 400000, 20},
+        {43, "Thermal Paste", 30000, 100}, {44, "USB Extension Cable", 15000, 100}, {45, "CPU Cooler", 250000, 15},
+        {46, "Surge Protector", 70000, 30}, {47, "Smart Plug", 120000, 20}, {48, "Network Switch", 300000, 10},
+        {49, "Ethernet Card", 150000, 10}, {50, "RAM 4GB", 250000, 20}, {51, "Optical Drive", 200000, 10},
+        {52, "Anti-Static Wrist Strap", 30000, 50}, {53, "MicroSD Card 128GB", 150000, 100}, {54, "PCI-E Riser", 50000, 30},
+        {55, "Gaming Chair", 2500000, 5}, {56, "Desk Mat", 70000, 50}, {57, "Dual Monitor Stand", 350000, 10},
+        {58, "Cable Ties", 10000, 200}, {59, "Monitor 4K", 5000000, 8}, {60, "Tablet Stand", 80000, 30}
+    };
+    return barangList;
+}
+
+// Fungsi untuk menampilkan semua barang
+void tampilkanBarang(const vector<Barang>& barangList) {
+    cout << "\nDaftar Barang Komputer:\n";
+    cout << "ID\tNama\t\t\t\tHarga\t\tStok\n";
+    cout << "------------------------------------------------------------\n";
+    for (const auto& barang : barangList) {
+        cout << setw(2) << barang.id << "\t" << setw(25) << barang.nama 
+             << "\tRp" << setw(10) << barang.harga << "\t" << barang.stok << " pcs\n";
+    }
+}
+
+// Fungsi untuk mencari barang berdasarkan ID
+Barang* cariBarang(vector<Barang>& barangList, int id) {
+    for (auto& barang : barangList) {
+        if (barang.id == id) {
+            return &barang;
+        }
+    }
+    return nullptr;
+}
+
+// Fungsi untuk menambahkan barang ke keranjang
+void tambahKeKeranjang(vector<KeranjangItem>& keranjang, Barang* barang, int jumlah) {
+    if (barang->stok >= jumlah) {
+        barang->stok -= jumlah;  // Kurangi stok
+        bool ditemukan = false;
+        for (auto& item : keranjang) {
+            if (item.barang.id == barang->id) {
+                item.jumlah += jumlah;
+                ditemukan = true;
+                break;
+            }
+        }
+        if (!ditemukan) {
+            keranjang.push_back({*barang, jumlah});
+        }
+        cout << jumlah << " " << barang->nama << " berhasil ditambahkan ke keranjang.\n";
+    } else {
+        cout << "Stok tidak mencukupi!\n";
+    }
+}
+
+// Fungsi untuk menghitung total harga
+double hitungTotalHarga(const vector<KeranjangItem>& keranjang) {
+    double total = 0;
+    for (const auto& item : keranjang) {
+        total += item.barang.harga * item.jumlah;
+    }
+    return total;
+}
+
+// Fungsi untuk menghitung diskon berdasarkan total harga
+double hitungDiskon(double totalHarga) {
+    if (totalHarga >= 5000000) {
+        return totalHarga * 0.15;  // Diskon 15%
+    } else if (totalHarga >= 2000000) {
+        return totalHarga * 0.10;  // Diskon 10%
+    }
+    return 0;
+}
+
+// Fungsi untuk mendapatkan tanggal dan waktu saat ini
+string getTanggalWaktu() {
+    time_t t = time(0);
+    tm* now = localtime(&t);
+    char buffer[80];
+    strftime(buffer, 80, "%d-%m-%Y %H:%M:%S", now);
+    return string(buffer);
+}
+
+// Fungsi untuk menampilkan struk pembelian
+void cetakStruk(const vector<KeranjangItem>& keranjang, double totalHarga, double diskon) {
+    cout << "\n===========================================\n";
+    cout << "            Toko Komputer Sukses           \n";
+    cout << "      Jl. Teknologi No. 21, Jakarta        \n";
+    cout << "Tanggal: " << getTanggalWaktu() << endl;
+    cout << "-------------------------------------------\n";
+    cout << "Nama Barang\tJumlah\tHarga\t\tSubtotal\n";
+    cout << "-------------------------------------------\n";
+    for (const auto& item : keranjang) {
+        double subtotal = item.barang.harga * item.jumlah;
+        cout << setw(10) << item.barang.nama << "\t" << setw(6) << item.jumlah 
+             << "\tRp" << setw(8) << item.barang.harga << "\tRp" << setw(8) << subtotal << endl;
+    }
+    cout << "-------------------------------------------\n";
+    cout << "Total Harga:\t\t\t\tRp" << totalHarga << endl;
+    cout << "Diskon:\t\t\t\t\tRp" << diskon << endl;
+    cout << "Total Bayar:\t\t\t\tRp" << totalHarga - diskon << endl;
+    cout << "-------------------------------------------\n";
+    cout << "   Terima kasih atas kunjungan Anda!       \n";
+    cout << "===========================================\n";
+}
+
+int main() {
+    vector<Barang> barangList = inisialisasiBarang();
+    vector<KeranjangItem> keranjang;
+    int pilihan;
+
+    do {
+        cout << "\n=== Program Kasir ===\n";
+        cout << "1. Tampilkan Barang\n";
+        cout << "2. Tambah Barang ke Keranjang\n";
+        cout << "3. Checkout\n";
+        cout << "4. Keluar\n";
+        cout << "Pilihan: ";
+        cin >> pilihan;
+
+        switch (pilihan) {
+            case 1: {
+                tampilkanBarang(barangList);
+                break;
+            }
+            case 2: {
+                int id, jumlah;
+                cout << "Masukkan ID barang: ";
+                cin >> id;
+                cout << "Masukkan jumlah: ";
+                cin >> jumlah;
+
+                Barang* barang = cariBarang(barangList, id);
+                if (barang) {
+                    tambahKeKeranjang(keranjang, barang, jumlah);
+                } else {
+                    cout << "Barang dengan ID " << id << " tidak ditemukan.\n";
+                }
+                break;
+            }
+            case 3: {
+                double totalHarga = hitungTotalHarga(keranjang);
+                double diskon = hitungDiskon(totalHarga);
+                cetakStruk(keranjang, totalHarga, diskon);
+                keranjang.clear();  // Kosongkan keranjang setelah checkout
+                break;
+            }
+            case 4:
+                cout << "Terima kasih telah menggunakan program kasir.\n";
+                break;
+            default:
+                cout << "Pilihan tidak valid!\n";
+        }
+    } while (pilihan != 4);
+
+    return 0;
+}
+
