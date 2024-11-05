@@ -1,0 +1,143 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <iomanip>
+
+using namespace std;
+
+struct Item {
+    string name;
+    int price;
+};
+
+// Fungsi untuk menampilkan menu makanan, minuman, dan dessert
+void displayMenu(const vector<Item>& foodMenu, const vector<Item>& drinkMenu, const vector<Item>& dessertMenu) {
+    cout << "\n========== MENU ==========\n";
+    cout << "Makanan:\n";
+    for (size_t i = 0; i < foodMenu.size(); ++i) {
+        cout << i + 1 << ". " << foodMenu[i].name << " - Rp" << foodMenu[i].price << endl;
+    }
+    cout << "\nMinuman:\n";
+    for (size_t i = 0; i < drinkMenu.size(); ++i) {
+        cout << i + 1 << ". " << drinkMenu[i].name << " - Rp" << drinkMenu[i].price << endl;
+    }
+    cout << "\nDessert:\n";
+    for (size_t i = 0; i < dessertMenu.size(); ++i) {
+        cout << i + 1 << ". " << dessertMenu[i].name << " - Rp" << dessertMenu[i].price << endl;
+    }
+    cout << "==========================\n";
+}
+
+// Fungsi untuk memilih item dari kategori tertentu
+int chooseItem(const vector<Item>& menu) {
+    int choice;
+    cout << "Pilih item (masukkan nomor): ";
+    cin >> choice;
+    if (choice < 1 || choice > menu.size()) {
+        cout << "Pilihan tidak valid! Silakan coba lagi.\n";
+        return -1;
+    }
+    return choice - 1;
+}
+
+// Fungsi untuk memproses pemesanan dan menghitung total harga
+int processOrder(const vector<Item>& foodMenu, const vector<Item>& drinkMenu, const vector<Item>& dessertMenu) {
+    int totalCost = 0;
+    int choice;
+
+    cout << "\nPesan Makanan\n";
+    choice = chooseItem(foodMenu);
+    if (choice != -1) {
+        totalCost += foodMenu[choice].price;
+        cout << "Anda memesan " << foodMenu[choice].name << " - Rp" << foodMenu[choice].price << endl;
+    }
+
+    cout << "\nPesan Minuman\n";
+    choice = chooseItem(drinkMenu);
+    if (choice != -1) {
+        totalCost += drinkMenu[choice].price;
+        cout << "Anda memesan " << drinkMenu[choice].name << " - Rp" << drinkMenu[choice].price << endl;
+    }
+
+    cout << "\nPesan Dessert\n";
+    choice = chooseItem(dessertMenu);
+    if (choice != -1) {
+        totalCost += dessertMenu[choice].price;
+        cout << "Anda memesan " << dessertMenu[choice].name << " - Rp" << dessertMenu[choice].price << endl;
+    }
+
+    cout << "\nTotal biaya pesanan Anda: Rp" << totalCost << endl;
+    return totalCost;
+}
+
+// Fungsi untuk melakukan pengecekan apakah uang cukup
+bool checkPayment(int totalCost) {
+    int money;
+    cout << "Masukkan jumlah uang Anda: Rp";
+    cin >> money;
+
+    if (money >= totalCost) {
+        cout << "Pembayaran berhasil! Kembalian Anda: Rp" << money - totalCost << endl;
+        return true;
+    } else {
+        cout << "Uang Anda tidak cukup. Kurang Rp" << totalCost - money << ".\n";
+        return false;
+    }
+}
+
+int main() {
+    // Menu Makanan
+    vector<Item> foodMenu = {
+        {"Nasi Goreng", 15000}, {"Mie Goreng", 12000}, {"Ayam Bakar", 20000},
+        {"Sate Ayam", 18000}, {"Bakso", 15000}, {"Soto Ayam", 12000},
+        {"Nasi Uduk", 13000}, {"Nasi Padang", 25000}, {"Rendang", 30000},
+        {"Gudeg", 17000}
+    };
+
+    // Menu Minuman
+    vector<Item> drinkMenu = {
+        {"Es Teh", 5000}, {"Jus Jeruk", 10000}, {"Kopi Hitam", 8000},
+        {"Susu Coklat", 7000}, {"Teh Tarik", 6000}, {"Jus Alpukat", 12000},
+        {"Air Mineral", 3000}, {"Es Kelapa", 10000}, {"Milkshake", 15000},
+        {"Smoothie", 12000}
+    };
+
+    // Menu Dessert
+    vector<Item> dessertMenu = {
+        {"Es Krim", 7000}, {"Pudding", 6000}, {"Brownies", 15000},
+        {"Kue Cubit", 10000}, {"Donat", 5000}, {"Churros", 12000},
+        {"Waffle", 18000}, {"Pisang Goreng", 8000}, {"Pancake", 12000},
+        {"Cheesecake", 20000}
+    };
+
+    char repeat;
+    bool paymentSuccess;
+
+    do {
+        displayMenu(foodMenu, drinkMenu, dessertMenu);
+
+        int totalCost = processOrder(foodMenu, drinkMenu, dessertMenu);
+
+        // Proses pengecekan uang dan pembayaran
+        do {
+            paymentSuccess = checkPayment(totalCost);
+            if (!paymentSuccess) {
+                cout << "Apakah Anda ingin menambah uang? (y/n): ";
+                char addMoney;
+                cin >> addMoney;
+                if (addMoney == 'n' || addMoney == 'N') {
+                    cout << "Pembayaran dibatalkan. Pesanan tidak berhasil.\n";
+                    break;
+                }
+            }
+        } while (!paymentSuccess);
+
+        // Menanyakan apakah user ingin memesan lagi
+        cout << "\nApakah Anda ingin memesan lagi? (y/n): ";
+        cin >> repeat;
+
+    } while (repeat == 'y' || repeat == 'Y');
+
+    cout << "\nTerima kasih telah memesan. Selamat menikmati!\n";
+    return 0;
+}
