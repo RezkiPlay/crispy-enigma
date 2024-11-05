@@ -117,26 +117,26 @@ string getTanggalWaktu() {
 
 // Fungsi untuk menampilkan struk pembelian
 void cetakStruk(const vector<KeranjangItem>& keranjang, double totalHarga, double diskon) {
-    cout << "\n===========================================\n";
-    cout << "            Toko Komputer Sukses           \n";
-    cout << "      Jl. Teknologi No. 21, Jakarta        \n";
+    cout << "\n==========================================================\n";
+    cout << "    		  Toko RezkiPlay Skibidi           \n";
+    cout << "           Jl. suka suka gw icikiwir slebew        \n";
     cout << "Tanggal: " << getTanggalWaktu() << endl;
-    cout << "-------------------------------------------\n";
+    cout << "----------------------------------------------------------\n";
     cout << "Nama Barang\tJumlah\tHarga\t\tSubtotal\n";
-    cout << "-------------------------------------------\n";
+    cout << "----------------------------------------------------------\n";
     for (const auto& item : keranjang) {
         double subtotal = item.barang.harga * item.jumlah;
         cout << setw(10) << item.barang.nama << "\t" << setw(6) << item.jumlah 
              << "\tRp" << fixed << setprecision(0) << setw(8) << item.barang.harga 
              << "\tRp" << setw(8) << subtotal << endl;
     }
-    cout << "-------------------------------------------\n";
+    cout << "----------------------------------------------------------\n";
     cout << "Total Harga:\t\t\t\tRp" << totalHarga << endl;
     cout << "Diskon:\t\t\t\t\tRp" << diskon << endl;
     cout << "Total Bayar:\t\t\t\tRp" << totalHarga - diskon << endl;
-    cout << "-------------------------------------------\n";
-    cout << "   Terima kasih atas kunjungan Anda!       \n";
-    cout << "===========================================\n";
+    cout << "----------------------------------------------------------\n";
+    cout << "	Terima kasih atas kunjungan Anda!       \n";
+    cout << "==========================================================\n";
 }
 
 int main() {
